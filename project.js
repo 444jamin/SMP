@@ -96,7 +96,7 @@ const printRows = (rows) => {
         let rowString = "";
         for(const [i, symbol] of row.entries()) {
             rowString += symbol
-            if(i != row.lenght - 1) {
+            if(i != row.length - 1) {
                 rowString += " | "
             }
         }
