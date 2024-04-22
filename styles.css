@@ -23,4 +23,11 @@
     font-size: 24px;
 }
 
+#messageDisplay {
+    margin: 10px;
+    font-size: 16px;
+    color: rgb(77, 0, 128)(0, 0, 0);
+}
+
+
 
