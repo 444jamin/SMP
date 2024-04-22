@@ -1,0 +1,14 @@
+{
+  "name": "matik",
+  "version": "1.0.0",
+  "description": "quick javascript slot machine project pre kamosov co su zavysli nech mozu tukat a neminat pri tom peniaze :p",
+  "main": "project.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "prompt-sync": "^4.2.0"
+  }
+}
