@@ -1,22 +1,37 @@
 //prerobeny project.js na web-based interface namiesto terminal based
 let balance = 0;
 
-const ROWS = 3; 
-const COLS = 3;
+const ROWS = 4; 
+const COLS = 5;
 
 const SYMBOLS_COUNT = {
-    A: 2,
-    K: 4,
-    Q: 6,
-    J: 8
+    A: 4,
+    K: 6,
+    Q: 8,
+    J: 10
 }
 
 const SYMBOL_VALUES = {
-    A: 5,
-    K: 4,
-    Q: 3,
-    J: 2
+    A: 10,
+    K: 8,
+    Q: 5,
+    J: 3
 }
+
+const PATTERNS = [
+    [0,   1,  2,  3,  4],
+    [5,   6,  7,  8,  9],  
+    [10, 11, 12, 13, 14],
+    [15, 16, 17, 18, 19], 
+    
+    [0, 1, 7, 3, 4],
+    [5, 6, 12, 8, 9],
+    [10, 11, 17, 13, 14],
+    
+    [15, 16, 12, 18, 19], 
+    [10, 11, 7, 13, 14], 
+    [5, 6, 2, 8, 9]
+];
 
 function deposit() 
 {
@@ -110,7 +125,7 @@ function displayReels(reels)
         reel.forEach((symbol) => 
         {
             const symbolElement = document.createElement('div');
-            symbolElement.textContent = symbol; 
+            symbolElement.textContent = symbol;
             symbolElement.className = 'symbol'; 
             reelElement.appendChild(symbolElement);                     //appends the symbol element to the reel element
         });
@@ -151,14 +166,27 @@ function getWinnings(reels, bet)
     let winnings = 0;
     const rows = transpose(reels);
     
-    rows.forEach(row => 
+    for (let i = 0; i < PATTERNS.length; i++)
     {
-        if(row.every(symbol => symbol === row[0]))
-        {
-            winnings += bet * SYMBOL_VALUES[row[0]];
-        }
-    });
+        let pattern = PATTERNS[i];
+        let firstSymbol = rows[Math.floor(pattern[0] / COLS)][pattern[0] % COLS];
+        let isWinningLine = true;
 
+        for(let j = 1; j < pattern.length; j++)
+        {
+            let symbol = rows[Math.floor(pattern[j] / COLS)][pattern[j] % COLS];
+            if(symbol !== firstSymbol)
+            {
+                isWinningLine = false;
+                break;
+            }
+        }
+    
+        if(isWinningLine)
+        {
+            winnings += bet * SYMBOL_VALUES[firstSymbol];
+        }
+    }
     return winnings;
 };
 

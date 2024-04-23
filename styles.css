@@ -7,19 +7,22 @@ body {
 }
 
 #gameContainer {
-    width: 300px;
+    width: 500px;
     margin: auto;
     text-align: center;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    background-color: #fff; /* Clear white background */
-    box-shadow: 0 0 10px rgba(0,0,0,0.1); /* Soft shadow for depth */
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* This centers everything horizontally */
 }
 
 
 input[type="text"], input[type="number"] {
-    width: 80%; /* Sufficient width for easy interaction */
+    width: 71%; /* Sufficient width for easy interaction */
     padding: 8px;
     margin: 10px 0; /* Space around input fields */
     border: 1px solid #ddd; /* Subtle border */
@@ -66,7 +69,6 @@ button:hover {
     align-items: center; /* Align reels vertically */
     padding: 10px;
     gap: 10px; /* Space between each reel */
-    flex-wrap: wrap;  /* Allows reels to wrap on smaller screens */
 }
 
 .reel {
