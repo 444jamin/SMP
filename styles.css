@@ -1,3 +1,11 @@
+body {
+    background-image: url('./casino.jpg');
+    background-size: cover;
+    font-family: 'Arial', sans-serif; /* Clean, readable font */
+    background-color: #fafafa; /* Soft background color */
+    color: #333; /* High contrast text color */
+}
+
 #gameContainer {
     width: 300px;
     margin: auto;
@@ -5,28 +13,111 @@
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    background-color: #fff; /* Clear white background */
+    box-shadow: 0 0 10px rgba(0,0,0,0.1); /* Soft shadow for depth */
 }
 
+
+input[type="text"], input[type="number"] {
+    width: 80%; /* Sufficient width for easy interaction */
+    padding: 8px;
+    margin: 10px 0; /* Space around input fields */
+    border: 1px solid #ddd; /* Subtle border */
+    border-radius: 4px; /* Match the rounded style */
+    box-sizing: border-box; /* Border and padding included in width */
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4CAF50; /* Pleasant green */
+    color: white;
+    font-size: 16px;
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+}
+
+button:hover {
+    background-color: #45a049; /* Slightly darker green on hover */
+}
+
+
+@media (max-width: 600px) {
+    #gameContainer {
+        width: 100%;  /* Full width for better use of space */
+        padding: 10px;
+    }
+
+    .reel {
+        width: 25%;  /* Adjust based on the total width of the game container */
+        height: 75px; /* Adjust height accordingly */
+    }
+
+    .symbol {
+        font-size: 16px; /* Smaller font size for smaller reels */
+    }
+}
+
+
 #reelContainer {
-    display: flex;
-    justify-content: space-around;
-    margin-bottom: 20px;
+    display: flex; /* This ensures that reels are laid out horizontally */
+    justify-content: center; /* Center the reels horizontally */
+    align-items: center; /* Align reels vertically */
+    padding: 10px;
+    gap: 10px; /* Space between each reel */
+    flex-wrap: wrap;  /* Allows reels to wrap on smaller screens */
 }
 
 .reel {
-    width: 50px;
-    height: 100px;
-    border: 1px solid black;
+    width: 60px; /* Width of each reel */
+    height: 180px; /* Total height of each reel */
     display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
+    flex-direction: column; /* Stack symbols vertically */
+    justify-content: space-around; /* Evenly space out symbols */
+    align-items: center; /* Center symbols horizontally */
+    border: 2px solid #ccc; /* Border around each reel */
+    background-color: #f4f4f4; /* Light background for reels */
+    border-radius: 10px; /* Rounded corners for aesthetics */
+    padding: 5px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);  /* Enhanced shadow for 3D effect */
+}
+
+.symbol {
+    font-size: 24px; /* Larger font size for visibility */
+    font-weight: bold; /* Bold text for symbols */
+    color: #333; /* Dark color for text */
+    padding: 8px;
+}
+
+.reel img {
+    width: 100%;
+    height: auto;
+    position: absolute;
+    top: 0;
+    transition: top 0.7s ease-out; /* Smooth transition for the spin effect */
 }
 
 #messageDisplay {
-    margin: 10px;
+    margin: 10px 0;
     font-size: 16px;
-    color: rgb(77, 0, 128)(0, 0, 0);
+    color: #d00; /* Default to a warning red */
+}
+
+.message-success {
+    color: #080; /* Green for success messages */
+}
+
+.message-info {
+    color: #00f; /* Blue for informational messages */
+}
+
+button:active {
+    transform: scale(0.98);  /* Slight push effect on click */
+}
+
+.messageDisplay {
+    transition: color 0.3s ease; /* Smooth transition for message color changes */
 }
 
 

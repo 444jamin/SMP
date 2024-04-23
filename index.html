@@ -8,17 +8,25 @@
 </head>
 <body>
     <div id="gameContainer">
+        <h1>Slot Machine Game</h1>
         <div id="balanceDisplay">Balance: $0</div>
-        <input type="text" id="depositInput" placeholder="Enter deposit amount">
-        <button onclick="startGame()">Deposit</button>
-        <div id="messageDisplay"></div>
-        <input type="number" id="linesInput" placeholder="Enter number of lines (1-3)">
-        <input type="number" id="betInput" placeholder="Enter bet amount per line">
-        <button id="spinButton" onclick="playRound()">Spin</button>
+
+        <div>
+            <input type="text" id="depositInput" placeholder="Enter deposit amount">
+            <button id="depositButton">Deposit</button>        
+        </div>
+        <div>
+            <input type="number" id="betInput" placeholder="Enter your bet">
+            <button id="spinButton">Spin</button>
+        </div>
+
         <div id="reelContainer"></div>
-        <div id="resultDisplay"></div>
-        <button id="newGameButton" onclick="newGame()" style="display:none;">Play Again?</button>
+        <div id="messageDisplay"></div>
+
+        <button id="playAgainButton" style="display: none;">Play Again</button>
     </div>
+
     <script src="game.js"></script>
 </body>
 </html>
+

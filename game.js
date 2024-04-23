@@ -1,3 +1,4 @@
+//prerobeny project.js na web-based interface namiesto terminal based
 let balance = 0;
 
 const ROWS = 3; 
@@ -33,7 +34,8 @@ function deposit()
     {
         balance = depositAmount;
         updateBalanceDisplay();
-        messageDisplay.textContent = "";                           //vycisti message display
+        messageDisplay.textContent = "Deposit successfull";                           //vycisti message display
+        messageDisplay.style.color = 'green';
     }
 };
 
@@ -48,10 +50,11 @@ function getBet()
     const betAmount = parseFloat(betInput.value);
     const messageDisplay = document.getElementById('messageDisplay');
 
-    if(isNaN(betAmount) || betAmount <= 0 || numberBet > balance) 
+    if(isNaN(betAmount) || betAmount <= 0 || betAmount > balance) 
     {
         messageDisplay.textContent = "Invalid bet, try again.";
         messageDisplay.style.color = 'red';
+        return null;
     } 
     else 
     {
@@ -94,23 +97,27 @@ function spin()
     return reels;
 };
 
-function displayReels(reels)                         //mostly 4 html
+function displayReels(reels) 
 {
     const reelContainer = document.getElementById('reelContainer');
     reelContainer.innerHTML = '';
+    
     reels.forEach((reel) => 
     {
         const reelElement = document.createElement('div');
         reelElement.className = 'reel';
-        reel.forEach(symbol => 
+        
+        reel.forEach((symbol) => 
         {
             const symbolElement = document.createElement('div');
-            symbolElement.textContent = symbol;
-            reelElement.appendChild(symbolElement);                    //appends the symbol element to the reel element
+            symbolElement.textContent = symbol; 
+            symbolElement.className = 'symbol'; 
+            reelElement.appendChild(symbolElement);                     //appends the symbol element to the reel element
         });
-        reelContainer.appendChild(reelElement);                        //adds the completed reel element to the reelContainer in the HTML document
+        reelContainer.appendChild(reelElement);                       //adds the completed reel element to the reelContainer in the HTML document
     });
-};
+}
+
 /*
 [
     [A, B, C], // Reel 1        
@@ -139,7 +146,7 @@ function transpose(reels)      //This operation rearranges the matrix so that ro
     return rows;
 };
 
-function getWinnings(rows, bet) 
+function getWinnings(reels, bet) 
 {
     let winnings = 0;
     const rows = transpose(reels);
@@ -154,3 +161,93 @@ function getWinnings(rows, bet)
 
     return winnings;
 };
+
+function displayWinnings(winnings)
+{
+    balance += winnings; 
+    updateBalanceDisplay(); 
+
+    const messageDisplay = document.getElementById('messageDisplay'); 
+    messageDisplay.textContent = winnings > 0 ? `Congratulations! You won $${winnings.toFixed(2)}` : 'Try again!';
+    messageDisplay.style.color = winnings > 0 ? 'green' : 'red'; 
+
+}
+
+function setupGame() 
+{
+    updateBalanceDisplay();
+
+    const spinButton = document.getElementById('spinButton');
+    spinButton.addEventListener('click', playGame);
+
+    const playAgainButton = document.getElementById('playAgainButton');
+    playAgainButton.addEventListener('click', () => 
+    {
+        playAgainButton.style.display = 'none'; 
+        playGame();
+    });
+}
+
+function playGame()
+{
+    const messageDisplay = document.getElementById('betInput');
+    const betAmount = getBet();
+    if (!betAmount) {
+        return;
+    }
+
+    const reels = spin();
+    displayReels(reels);
+
+    const winnings = getWinnings(reels, betAmount);
+    displayWinnings(winnings);
+
+    if (balance <= 0) 
+    {
+        messageDisplay.textContent = "You ran out of money!";
+        document.getElementById('playAgainButton').style.display = 'none';
+    } 
+    else 
+    {
+        document.getElementById('playAgainButton').style.display = 'block';
+    }
+};
+
+
+document.addEventListener('DOMContentLoaded', () =>                        //DOM = event ktory sa stane po nacitani HTML 
+{
+    setupGame();            //mam v tom aj playGame
+    const depositButton = document.getElementById('depositButton');
+    if (depositButton) 
+    {
+        depositButton.addEventListener('click', deposit);
+    } 
+    else 
+    {
+        console.log("Deposit button not found");
+    }
+
+    const spinButton = document.getElementById('spinButton');
+    if (spinButton) 
+    {
+        spinButton.addEventListener('click', playGame);
+    }
+    else 
+    {
+        console.log("Spin button not found");
+    }
+
+    const playAgainButton = document.getElementById('playAgainButton');
+    if (playAgainButton) 
+    {
+        playAgainButton.addEventListener('click', () => 
+        {
+            playAgainButton.style.display = 'none';
+            playGame();
+        });
+    } 
+    else 
+    {
+        console.log("Play Again button not found");
+    }
+});
