@@ -134,16 +134,19 @@ function displayReels(reels)
     const reelContainer = document.getElementById('reelContainer');
     reelContainer.innerHTML = '';
     
-    reels.forEach((reel) => 
+    reels.forEach((reel, reelIndex) => 
     {
         const reelElement = document.createElement('div');
         reelElement.className = 'reel';
         
-        reel.forEach((symbol) => 
+        reel.forEach((symbol, symbolIndex) => 
         {
             const symbolElement = document.createElement('div');
             symbolElement.textContent = symbol;
-            symbolElement.className = 'symbol'; 
+            symbolElement.className = 'symbol';
+            
+            let actualIndex = reelIndex + symbolIndex * COLS;
+            symbolElement.setAttribute('data-index', actualIndex);
             reelElement.appendChild(symbolElement);                     //appends the symbol element to the reel element
         });
         reelContainer.appendChild(reelElement);                       //adds the completed reel element to the reelContainer in the HTML document
@@ -182,6 +185,7 @@ function getWinnings(reels, bet)
 {
     let winnings = 0;
     const rows = transpose(reels);
+    let winningPatterns = [];
 
     const sortedPatterns = PATTERNS.sort((a, b) => b.indices.length - a.indices.length);
     let usedIndices = new Set();
@@ -214,15 +218,16 @@ function getWinnings(reels, bet)
             console.log(`Winning pattern: ${pattern.indices.join(', ')}, Type: ${pattern.type}, Symbol: ${firstSymbol}, Win: ${patternWin}`);
             winnings += patternWin;
 
+            winningPatterns.push({ indices: pattern.indices });
             pattern.indices.forEach(index => usedIndices.add(index));         //markovanie uz vyplatenych vyhier
         }
     }
 
     console.log(`Total winnings: ${winnings}`);
-    return winnings;
+    return { winnings, winningPatterns };
 };
 
-function displayWinnings(winnings)
+function displayWinnings(winnings, winningPatterns)
 {
     balance += winnings; 
     updateBalanceDisplay(); 
@@ -231,6 +236,28 @@ function displayWinnings(winnings)
     messageDisplay.textContent = winnings > 0 ? `Congratulations! You won $${winnings.toFixed(2)}` : 'Try again!';
     messageDisplay.style.color = winnings > 0 ? 'green' : 'red'; 
 
+    highlightWinningCombinations(winningPatterns);
+}
+
+function highlightWinningCombinations(winningPatterns) 
+{
+    winningPatterns.forEach(pattern => 
+        {
+        pattern.indices.forEach(index => 
+            {
+            const symbolElement = document.querySelector(`.symbol[data-index="${index}"]`);
+            if (symbolElement) 
+            {
+                symbolElement.classList.add('highlight');
+            }
+        });
+    });
+}
+
+function clearHighlights() {
+    document.querySelectorAll('.symbol.highlight').forEach(symbol => {
+        symbol.classList.remove('highlight');
+    });
 }
 
 function setupGame() 
@@ -256,11 +283,12 @@ function playGame()
         return;
     }
 
+    clearHighlights();
     const reels = spin();
     displayReels(reels);
 
-    const winnings = getWinnings(reels, betAmount);
-    displayWinnings(winnings);
+    const { winnings, winningPatterns } = getWinnings(reels, betAmount);
+    displayWinnings(winnings, winningPatterns);
 
     if (balance <= 0) 
     {

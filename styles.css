@@ -92,6 +92,12 @@ button:hover {
     padding: 8px;
 }
 
+.symbol.highlight {
+    background-color: gold; /* Or any color that fits the theme */
+    color: black;
+    border: 2px solid red; /* Make it stand out */
+}
+
 .reel img {
     width: 100%;
     height: auto;
