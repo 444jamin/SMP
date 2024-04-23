@@ -12,26 +12,43 @@ const SYMBOLS_COUNT = {
 }
 
 const SYMBOL_VALUES = {
-    A: 10,
-    K: 8,
-    Q: 5,
-    J: 3
+    A: 5,
+    K: 4,
+    Q: 3,
+    J: 2
 }
 
-const PATTERNS = [
-    [0,   1,  2,  3,  4],
-    [5,   6,  7,  8,  9],  
-    [10, 11, 12, 13, 14],
-    [15, 16, 17, 18, 19], 
-    
-    [0, 1, 7, 3, 4],
+const PATTERNS = [    
+    { indices : [0,   1,  2], type: 'trojka' },
+    { indices : [5,   6,  7], type: 'trojka' },
+    { indices : [10, 11, 12], type: 'trojka' },
+    { indices : [15, 16, 17], type: 'trojka' },
+
+    { indices : [0,   1,  2,  3], type: 'stvorka' },
+    { indices : [5,   6,  7,  8], type: 'stvorka' }, 
+    { indices : [10, 11, 12, 13], type: 'stvorka' },
+    { indices : [15, 16, 17, 18], type: 'stvorka' },
+
+    { indices : [0,   1,  2,  3,  4], type: 'fullka' },
+    { indices : [5,   6,  7,  8,  9], type: 'fullka' },
+    { indices : [10, 11, 12, 13, 14], type: 'fullka' },
+    { indices : [15, 16, 17, 18, 19], type: 'fullka' },
+
+  /*  [0, 1, 7, 3, 4],
     [5, 6, 12, 8, 9],
     [10, 11, 17, 13, 14],
     
     [15, 16, 12, 18, 19], 
     [10, 11, 7, 13, 14], 
-    [5, 6, 2, 8, 9]
+    [5, 6, 2, 8, 9]            */
 ];
+
+const payoutMultipliers = 
+{
+    'trojka': 1,
+    'stvorka': 2,
+    'fullka': 5,
+}
 
 function deposit() 
 {
@@ -165,28 +182,43 @@ function getWinnings(reels, bet)
 {
     let winnings = 0;
     const rows = transpose(reels);
-    
-    for (let i = 0; i < PATTERNS.length; i++)
+
+    const sortedPatterns = PATTERNS.sort((a, b) => b.indices.length - a.indices.length);
+    let usedIndices = new Set();
+
+    for(const pattern of sortedPatterns) 
     {
-        let pattern = PATTERNS[i];
-        let firstSymbol = rows[Math.floor(pattern[0] / COLS)][pattern[0] % COLS];
+        if (pattern.indices.some(index => usedIndices.has(index)))        //preskakuje uz vyplatene vyhry
+        {
+            continue;
+        }
+
+        let firstSymbol = rows[Math.floor(pattern.indices[0] / COLS)][pattern.indices[0] % COLS];
         let isWinningLine = true;
 
-        for(let j = 1; j < pattern.length; j++)
+        for(let j = 1; j < pattern.indices.length; j++)
         {
-            let symbol = rows[Math.floor(pattern[j] / COLS)][pattern[j] % COLS];
+            let symbol = rows[Math.floor(pattern.indices[j] / COLS)][pattern.indices[j] % COLS];
             if(symbol !== firstSymbol)
             {
                 isWinningLine = false;
+                console.log(`Pattern broken at index ${pattern.indices[j]} with symbol ${symbol}`);
                 break;
             }
         }
     
-        if(isWinningLine)
+        if(isWinningLine) 
         {
-            winnings += bet * SYMBOL_VALUES[firstSymbol];
+            let multiplier = payoutMultipliers[pattern.type];
+            let patternWin = bet * SYMBOL_VALUES[firstSymbol] * multiplier;
+            console.log(`Winning pattern: ${pattern.indices.join(', ')}, Type: ${pattern.type}, Symbol: ${firstSymbol}, Win: ${patternWin}`);
+            winnings += patternWin;
+
+            pattern.indices.forEach(index => usedIndices.add(index));         //markovanie uz vyplatenych vyhier
         }
     }
+
+    console.log(`Total winnings: ${winnings}`);
     return winnings;
 };
 
