@@ -71,6 +71,15 @@ button:hover {
     gap: 10px; /* Space between each reel */
 }
 
+@keyframes spin {
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateY(-100%);
+    }
+}
+
 .reel {
     width: 60px; /* Width of each reel */
     height: 180px; /* Total height of each reel */
@@ -83,13 +92,17 @@ button:hover {
     border-radius: 10px; /* Rounded corners for aesthetics */
     padding: 5px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);  /* Enhanced shadow for 3D effect */
+    overflow: hidden; /* New - Ensures that symbols moving out of this container are not visible */
+    position: relative; /* New - Allows absolute positioning of children relative to reel */
 }
+
 
 .symbol {
     font-size: 24px; /* Larger font size for visibility */
     font-weight: bold; /* Bold text for symbols */
     color: #333; /* Dark color for text */
     padding: 8px;
+    animation: spin 0.5s ease-in-out forwards;
 }
 
 .symbol.highlight {

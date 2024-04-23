@@ -147,7 +147,23 @@ function displayReels(reels)
             
             let actualIndex = reelIndex + symbolIndex * COLS;
             symbolElement.setAttribute('data-index', actualIndex);
-            reelElement.appendChild(symbolElement);                     //appends the symbol element to the reel element
+
+            const totalSymbolsToShow = ROWS + 10;
+            for (let i = 0; i < totalSymbolsToShow; i++) 
+            {
+                const symbolIndex = i % reel.length;
+                const symbolElement = document.createElement('div');
+                symbolElement.textContent = reel[symbolIndex];
+                symbolElement.className = 'symbol';
+                symbolElement.style.top = `${i * 100}%`;
+                reelElement.appendChild(symbolElement);                   //appends the symbol element to the reel element
+            }
+
+            setTimeout(() => 
+            {
+                reelElement.style.transform = `translateY(0)`;
+            }, 500 + 100 * reelIndex);
+            
         });
         reelContainer.appendChild(reelElement);                       //adds the completed reel element to the reelContainer in the HTML document
     });
