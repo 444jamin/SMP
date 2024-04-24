@@ -1,9 +1,9 @@
 body {
     background-image: url('./casino.jpg');
     background-size: cover;
-    font-family: 'Arial', sans-serif; /* Clean, readable font */
-    background-color: #fafafa; /* Soft background color */
-    color: #333; /* High contrast text color */
+    font-family: 'Arial', sans-serif;
+    background-color: #fafafa;
+    color: #333;
 }
 
 #gameContainer {
@@ -17,12 +17,12 @@ body {
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
     display: flex;
     flex-direction: column;
-    align-items: center; /* This centers everything horizontally */
+    align-items: center;
 }
 
 
 input[type="text"], input[type="number"] {
-    width: 71%; /* Sufficient width for easy interaction */
+    width: 71%; 
     padding: 8px;
     margin: 10px 0; /* Space around input fields */
     border: 1px solid #ddd; /* Subtle border */
@@ -34,7 +34,7 @@ button {
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
-    background-color: #4CAF50; /* Pleasant green */
+    background-color: #4CAF50;
     color: white;
     font-size: 16px;
     cursor: pointer; /* Pointer cursor on hover */
@@ -71,15 +71,6 @@ button:hover {
     gap: 10px; /* Space between each reel */
 }
 
-@keyframes spin {
-    from {
-        transform: translateY(0);
-    }
-    to {
-        transform: translateY(-100%);
-    }
-}
-
 .reel {
     width: 60px; /* Width of each reel */
     height: 180px; /* Total height of each reel */
@@ -96,41 +87,31 @@ button:hover {
     position: relative; /* New - Allows absolute positioning of children relative to reel */
 }
 
-
 .symbol {
-    font-size: 24px; /* Larger font size for visibility */
-    font-weight: bold; /* Bold text for symbols */
-    color: #333; /* Dark color for text */
+    font-size: 24px; 
+    font-weight: bold; 
+    color: #333; 
     padding: 8px;
-    animation: spin 0.5s ease-in-out forwards;
 }
 
 .symbol.highlight {
-    background-color: gold; /* Or any color that fits the theme */
+    background-color: gold; 
     color: black;
-    border: 2px solid red; /* Make it stand out */
-}
-
-.reel img {
-    width: 100%;
-    height: auto;
-    position: absolute;
-    top: 0;
-    transition: top 0.7s ease-out; /* Smooth transition for the spin effect */
+    border: 2px solid red; 
 }
 
 #messageDisplay {
     margin: 10px 0;
     font-size: 16px;
-    color: #d00; /* Default to a warning red */
+    color: #d00; 
 }
 
 .message-success {
-    color: #080; /* Green for success messages */
+    color: #080; 
 }
 
 .message-info {
-    color: #00f; /* Blue for informational messages */
+    color: #00f;
 }
 
 button:active {
